@@ -4,3 +4,4 @@ C:\Projects\CompilerBdd\CompilerBdd\obj\Debug\ResolveAssemblyReference.cache
 C:\Projects\CompilerBdd\CompilerBdd\obj\Debug\CompilerBdd.dll
 C:\Projects\CompilerBdd\CompilerBdd\obj\Debug\CompilerBdd.pdb
 C:\Projects\CompilerBdd\CompilerBdd\bin\Debug\NSpec.dll
+C:\Projects\CompilerBdd\CompilerBdd\bin\Debug\Data\testfile.txt

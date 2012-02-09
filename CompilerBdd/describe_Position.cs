@@ -6,6 +6,10 @@ using NSpec;
 
 namespace CompilerBdd
 {
+    /// <summary>
+    /// <remarks>Assignment 1</remarks>
+    /// Represents an objcect for a Position in a file with a reference to the file name
+    /// </summary>
     public class Position
     {
         public int Line { get; private set; }
