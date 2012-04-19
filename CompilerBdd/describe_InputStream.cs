@@ -62,5 +62,27 @@ namespace CompilerBdd
                     expect<FileNotFoundException>(() => inputStream.open_input(Path.GetRandomFileName()));
             };
         }
+
+        void reading_from_stream()
+        {
+            context["reading from file"] = () =>
+            {
+                it["should get next character"] = () =>
+                {
+                    inputStream.open_input("testfile.txt");
+
+                    //(inputStream.current_position.FileName as string).should_be("testfile.txt");
+                    //(inputStream.current_stream as FileStream).should_not_be_null();
+                };
+            };
+        }
+    }
+
+    public static class extensions
+    {
+        public static void should_be_null(this object fs)
+        {
+            fs.should_be_null();
+        }
     }
 }

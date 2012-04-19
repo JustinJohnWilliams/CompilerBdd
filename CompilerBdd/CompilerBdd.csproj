@@ -49,6 +49,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\assignment1.txt" />
+    <Content Include="Data\assignment2.txt" />
+    <Content Include="Data\assignment3.txt" />
+    <Content Include="Data\assignment4.txt" />
     <Content Include="Data\testfile.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
