@@ -5,3 +5,10 @@ C:\Projects\CompilerBdd\CompilerBdd\obj\Debug\CompilerBdd.dll
 C:\Projects\CompilerBdd\CompilerBdd\obj\Debug\CompilerBdd.pdb
 C:\Projects\CompilerBdd\CompilerBdd\bin\Debug\NSpec.dll
 C:\Projects\CompilerBdd\CompilerBdd\bin\Debug\Data\testfile.txt
+C:\Users\juwilliams\Desktop\Work\Sandbox\Github\CompilerBdd\CompilerBdd\bin\Debug\Data\testfile.txt
+C:\Users\juwilliams\Desktop\Work\Sandbox\Github\CompilerBdd\CompilerBdd\bin\Debug\CompilerBdd.dll
+C:\Users\juwilliams\Desktop\Work\Sandbox\Github\CompilerBdd\CompilerBdd\bin\Debug\CompilerBdd.pdb
+C:\Users\juwilliams\Desktop\Work\Sandbox\Github\CompilerBdd\CompilerBdd\bin\Debug\NSpec.dll
+C:\Users\juwilliams\Desktop\Work\Sandbox\Github\CompilerBdd\CompilerBdd\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\juwilliams\Desktop\Work\Sandbox\Github\CompilerBdd\CompilerBdd\obj\Debug\CompilerBdd.dll
+C:\Users\juwilliams\Desktop\Work\Sandbox\Github\CompilerBdd\CompilerBdd\obj\Debug\CompilerBdd.pdb

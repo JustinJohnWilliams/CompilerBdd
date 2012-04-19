@@ -1,0 +1,49 @@
+Assignment 4: Efficient representation of sets of small integers
+----------------------------------------------------------------
+
+Using the language you chose for the project, design and implement a
+data type that supports sets of integers in the range 0 .. N - 1 .
+
+N is some compile-time constant which may be as small as 1 or as large
+as several hundred.  Your implementation should be such that the size of
+the representation of a set is reasonable in comparison to N.  (Ideally,
+for N =< 32, the representation should occupy one or two words.)
+
+Your data type should provide the following operations:
+
+     - create an empty set;
+
+     - add/remove a given element to/from a set;
+
+     - compute the union, intersection and (asymmetric) difference of
+       two sets;
+
+     - test whether a set is empty;
+
+     - test whether an integer (from the appropriate range) is a member
+       of a set;
+
+     - test whether one set is included in another;
+
+     - test whether two sets are equal;
+
+     - provide the size of a set;
+
+     - remove an existing element from a non-empty set and produce both
+       that element and the resulting set (this allows one to enumerate
+       through all the elemens in a a simple way);
+
+     - make a copy of a set (for languages other than Java: preferably
+       through assignment, preferably without involving a memory
+       allocator);.
+
+You will have occasion to use many sets, and operations on them will be
+relatively frequent, so your implementation should be reasonably
+efficient.  On no account should the use of sets lead to memory leaks.
+
+Please notice that the obvious choice is to use bit vectors.
+
+As always, you are expected to provide a program that tests your
+implementation.
+
+------------------------------------------------------------------------

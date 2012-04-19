@@ -1,0 +1,75 @@
+Assignment 3: A scanner (lexical analyzer) for the calculator
+-------------------------------------------------------------
+
+Using the language you chose for the project, implement a scanner for
+our little calculator language (see the description posted on my
+website).
+
+The principal procedure is nextsy(): this should read a symbol (token,
+lexeme) and set up information about the current symbol.  The current
+symbol is undefined before the first call to nextsy().
+
+nextsy() should use the interface to the input stream that was the
+subject of assignment 2. (See the comment at the end of this file.)
+
+nextsy() should ensure that the final EOT is immediately preceded by
+EOL, even if the final line of the input did not end with a newline.
+
+
+Information about the current symbol should be the following:
+
+  1. The position of the first character of the symbol (see assignment 1).
+
+  2. The class of the symbol.
+
+  3. Additional information (for some symbols).
+
+
+Details are given in the table below.
+
+        Class       Additional information    Explanation
+        -----       ----------------------    ----------
+
+        EOT         none                      End Of Text
+
+        EOL         none                      End Of Line
+
+        ID          see (1) below             an identifier
+
+        UINT        the integer value         an unsigned integer
+
+        OP          which operator?           "+", "-", "*", "div" or
+                                              "mod"
+
+        LPAR        none                      left parenthesis
+
+        RPAR        none                      right parenthesis
+
+        ASSIGNMENT  none                      ":="
+
+        QMARK       none                      "?"
+
+(1) An identifier must be accompanied by a reference (pointer or index)
+    to a table of strings.  The reference should allow retrieval (and,
+    e.g., printing) of the identifier's name.  The table should be
+    organised in such a manner that each string has a unique
+    representation (i.e., two occurrences of the same identifier will be
+    represented by identical references).  Searching the table for a
+    string should be reasonably efficient.
+
+    Please note that a keyword (in our language "div" or "mod") is not
+    an identifier.  However, it might be a good idea to keep keywords in
+    the string table.
+
+
+COMMENT: Please note that the value of end_of_input() tells us whether
+         it is possible to invoke nextch().  It does not, however, allow
+         us to determine whether the current character (which may be the
+         last one in the input) belongs to the symbol that we have
+         already processed, or constitutes the next symbol that must be
+         processed with the next invocation of nextsy().  Your design
+         must make sure that even the last character is never lost or
+         repeated, even if the input terminates without a final newline
+         character.
+
+-------------------------------------------------------------

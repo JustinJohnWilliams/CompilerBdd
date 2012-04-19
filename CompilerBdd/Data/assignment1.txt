@@ -1,0 +1,33 @@
+                              
+
+Assignment 1: Positions
+-----------------------
+
+Using the language you chose for the project, design and implement a
+data type called "Position" that can be used to store information about
+the name of an input file, the number of a line in that file (starting
+at 1), and the position ("column") on that line (starting at 0).
+
+Implement the following operations:
+
+   * Create and initialise a position.
+
+   * Increment the column of a position.
+
+   * Increment the line of a position (resetting the column to 0).
+
+   * Create a copy of a position.
+
+   * Show a position on the provided output stream, in a format
+     exemplified by the following:
+
+     file_name:12:4:
+
+     Note that the final colon should be followed by a single space.
+
+
+NOTE: You will have to create many positions, so when you copy a
+      position it is important for the two copies to share the same
+      representation of the file name.
+
+---------------------------------------------------------------------

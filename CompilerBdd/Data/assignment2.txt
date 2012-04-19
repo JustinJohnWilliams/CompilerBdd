@@ -1,0 +1,70 @@
+Assignment 2: Interface to an input stream
+------------------------------------------
+
+Using the language you chose for the project, design and implement an
+interface to an input stream.  The requirements are as follows:
+
+   * The global variable "cch" contains the current character.
+
+   * The global variable "cpos" contains the position of the current
+     character (this is a variable of the type you implemented for
+     assignment 1).
+
+   * open_input( file_name )  opens an input stream and associates it
+     with the named file.  If the named file does not exist, the
+     operation should produce an error message and terminate the
+     computation.   If the file name is an empty string, the stream
+     should be standard input.
+
+     This operation initializes "cch" to some particular value that is
+     either a space or a character that will not normally appear in
+     input.
+
+   * end_of_input() returns true or false, depending on whether there is
+     anything else in the opened input stream.  If the opened file is
+     empty, end_of_input() should immediately be true.
+
+   * nextch()  reads the next character into "cch" and updates "cpos"
+     accordingly.  The precondition is that end_of_input() returns
+     false.  If the precondition is not satisfied, nextch() should
+     report an internal error and terminate the computation.
+
+If you are using an object-oriented language, you may implement a class
+that provides this functionality.  "cch" and "cpos" could then be
+accessor methods, rather than global variables.
+
+If you are using a functional language, you may choose to reduce the
+entire interface to open_input(), which would read in all the characters
+and produce a list of pairs (i.e., each character associated with its
+position).
+
+As always, you are expected to provide a program that tests this
+interface.
+
+
+Additional clarification
+------------------------
+
+It should be possible to apply the following schema to copy a file:
+
+   open_input( ... );
+
+   while  not end_of_input()  do
+       nextch();
+       print( cch )
+   od
+
+Given that nextch() was invoked at least once, it should be possible to
+apply the following schema to echo characters upto the end of the
+current line:
+
+   while  not end_of_input() and cch != '\n'  do
+       process( cch );
+       print( cch )
+   od
+
+Please notice that this should work even if the input stream is a user's
+keyboard.  The user should see the echo after pressing "enter", i.e.,
+should not be forced to enter an additional character on the next line.
+
+---------------------------------------------------------------------
