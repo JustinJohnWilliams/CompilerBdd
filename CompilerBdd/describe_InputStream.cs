@@ -73,6 +73,36 @@ namespace CompilerBdd
             };
         }
 
+        void closing_file()
+        {
+            context["closing a file stream"] = () =>
+            {
+                it["should throw error if file stream not closed"] = () =>
+                {
+                    inputStream.open_input("testfile.txt");
+
+                    (inputStream.current_stream as FileStream).should_not_be_null();
+
+                    //don't close file stream
+                    expect<IOException>(() => inputStream.open_input("testfile.txt"));
+                    
+                };
+
+                it["should close a file stream"] = () =>
+                {
+                    inputStream.open_input("testfile.txt");
+
+                    (inputStream.current_stream as FileStream).should_not_be_null();
+
+                    inputStream.close();
+
+                    inputStream.open_input("testfile.txt");
+
+                    (inputStream.current_stream as FileStream).should_not_be_null();
+                };
+            };
+        }
+
         void reading_from_stream()
         {
             context["reading from file"] = () =>
@@ -90,7 +120,7 @@ namespace CompilerBdd
 
     public static class extensions
     {
-        public static void should_be_null(this object fs)
+        public static void should_be_null(this FileStream fs)
         {
             fs.should_be_null();
         }
