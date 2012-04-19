@@ -30,6 +30,11 @@ namespace CompilerBdd
             else throw new FileNotFoundException("File {0} does not exist.".With(path));
         }
 
+        public void close()
+        {
+            if (this.current_stream != null) current_stream.Close();
+        }
+
         private string GetFullFilePath(string fileName)
         {
             return "{0}/Data/{1}".With(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileName);
@@ -44,6 +49,11 @@ namespace CompilerBdd
         {
             inputStream = new InputStream();
             inputStream.current_position = new Position();
+        }
+
+        void after_each()
+        {
+            inputStream.close();
         }
 
         void opening_file()
@@ -71,8 +81,8 @@ namespace CompilerBdd
                 {
                     inputStream.open_input("testfile.txt");
 
-                    //(inputStream.current_position.FileName as string).should_be("testfile.txt");
-                    //(inputStream.current_stream as FileStream).should_not_be_null();
+                    (inputStream.current_position.FileName as string).should_be("testfile.txt");
+                    (inputStream.current_stream as FileStream).should_not_be_null();
                 };
             };
         }
