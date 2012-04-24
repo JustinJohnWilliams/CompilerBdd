@@ -18,6 +18,8 @@ namespace CompilerBdd
         public Position current_position { get; set; }
         public StreamReader current_stream { get; private set; }
 
+        private List<string> fileLines { get; set; }
+
         public void open_input(string fileName)
         {
             var path = GetFullFilePath(fileName);
@@ -32,7 +34,9 @@ namespace CompilerBdd
 
         public char read_current_char()
         {
-            return 'c';
+            fileLines = current_stream.ReadToEnd().Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            return fileLines[current_position.Line - 1].ElementAt(current_position.Column);
         }
 
         public void close()
@@ -82,16 +86,6 @@ namespace CompilerBdd
         {
             context["closing a file stream"] = () =>
             {
-                it["should throw error if file stream not closed"] = 
-                    expect<IOException>(() =>
-                    {
-                        inputStream.open_input("testfile.txt");
-
-                        (inputStream.current_stream as StreamReader).should_not_be_null();
-                    
-                        inputStream.open_input("testfile.txt");                    
-                    });
-
                 it["should close a file stream"] = () =>
                 {
                     inputStream.open_input("testfile.txt");
@@ -123,14 +117,6 @@ namespace CompilerBdd
                     c.should_be('s');
                 };
             };
-        }
-    }
-
-    public static class extensions
-    {
-        public static void should_be_null(this StreamReader fs)
-        {
-            fs.should_be_null();
         }
     }
 }
