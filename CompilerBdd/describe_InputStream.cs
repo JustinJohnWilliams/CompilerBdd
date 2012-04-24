@@ -18,7 +18,7 @@ namespace CompilerBdd
         public Position current_position { get; set; }
         public StreamReader current_stream { get; private set; }
 
-        private List<string> fileLines { get; set; }
+        private List<string> lines { get; set; }
 
         public void open_input(string fileName)
         {
@@ -28,23 +28,40 @@ namespace CompilerBdd
             {
                 current_position.FileName = fileName;
                 current_stream = new StreamReader(path);
-                fileLines = current_stream.ReadToEnd().Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                
+                lines = current_stream.ReadToEnd().Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
             }
             else throw new FileNotFoundException("File {0} does not exist.".With(path));
         }
 
         public char read_next_char()
         {
-            char result = fileLines[current_position.Line - 1]
-                                   .ElementAt(current_position.Column);
+            if (end_of_input())
+            {
+                throw new EndOfStreamException();
+            }
 
-            current_position.move_column_by(1);
+            char result;
 
-            if (current_position.Column == fileLines[current_position.Line - 1].Length)
+            if (EndOfLine())
+            {
+                result = '\n';
                 current_position.move_row_by(1);
-            
+            }
+            else
+            {
+                result = lines[current_position.Line - 1]
+                                       .ElementAt(current_position.Column);
+
+                current_position.move_column_by(1);
+            }            
 
             return result;
+        }
+
+        public bool end_of_input()
+        {
+            return (current_position.Line - 1 == lines.Count) ? true : false;
         }
 
         public void close()
@@ -55,6 +72,11 @@ namespace CompilerBdd
         private string GetFullFilePath(string fileName)
         {
             return "{0}/Data/{1}".With(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileName);
+        }
+
+        private bool EndOfLine()
+        {
+            return current_position.Column == lines[current_position.Line - 1].Length;
         }
     }
 
@@ -111,24 +133,48 @@ namespace CompilerBdd
 
         void reading_from_stream()
         {
+            before = () => inputStream.open_input("testfile.txt");
+
             context["reading from file"] = () =>
             {
                 it["should read characters on first line"] = () =>
                 {
-                    inputStream.open_input("testfile.txt");
-
                     ReadFirstLine();
                 };
 
                 it["should move to next line after reaching end of line"] = () =>
                 {
-                    inputStream.open_input("testfile.txt");
-
                     ReadFirstLine();
                     ReadSecondLine();
-                    ReadThirdLine();
+                };
+                
+                it["should throw and end of file exceptiopn if no more file to read"] = expect<EndOfStreamException>(() =>
+                {
+                    ReadFile();
+                    ReadNext();
+                });
+
+                it["should return true if current position exceeds input text"] = () =>
+                {
+                    ReadFile();
+                    
+                    ((bool)inputStream.end_of_input()).should_be_true();
                 };
 
+            };
+        }
+
+        void printing_out_file()
+        {
+            before = () => inputStream.open_input("testfile.txt");
+
+            //remove the 'x' and it will print file
+            xit["should print out file"] = () =>
+            {
+                while (!inputStream.end_of_input())
+                {
+                    Console.Write(ReadNext());
+                }
             };
         }
 
@@ -149,6 +195,8 @@ namespace CompilerBdd
             ReadNext().should_be('e');
             ReadNext().should_be('x');
             ReadNext().should_be('t');
+
+            ReadNext().should_be(NewLine());
         }
 
         private void ReadSecondLine()
@@ -159,6 +207,8 @@ namespace CompilerBdd
             ReadNext().should_be('e');
             ReadNext().should_be(' ');
             ReadNext().should_be('2');
+
+            ReadNext().should_be(NewLine());
         }
 
         private void ReadThirdLine()
@@ -178,6 +228,20 @@ namespace CompilerBdd
             ReadNext().should_be(')');
             ReadNext().should_be('_');
             ReadNext().should_be('+');
+
+            ReadNext().should_be(NewLine());
+        }
+
+        private void ReadFile()
+        {
+            ReadFirstLine();
+            ReadSecondLine();
+            ReadThirdLine();
+        }
+
+        private char NewLine()
+        {
+            return '\n';
         }
     }
 }
