@@ -40,6 +40,10 @@ namespace CompilerBdd
 
             current_position.move_column_by(1);
 
+            if (current_position.Column == fileLines[current_position.Line - 1].Length)
+                current_position.move_row_by(1);
+            
+
             return result;
         }
 
@@ -109,30 +113,71 @@ namespace CompilerBdd
         {
             context["reading from file"] = () =>
             {
-                it["should read characters"] = () =>
+                it["should read characters on first line"] = () =>
                 {
                     inputStream.open_input("testfile.txt");
 
-                    (inputStream.current_position.FileName as string).should_be("testfile.txt");
-                    (inputStream.current_stream as StreamReader).should_not_be_null();
-
-                    ReadNext().should_be('t');
-                    ReadNext().should_be('e');
-                    ReadNext().should_be('s');
-                    ReadNext().should_be('t');
-
-                    ReadNext().should_be(' ');
-                    ReadNext().should_be('t');
-                    ReadNext().should_be('e');
-                    ReadNext().should_be('x');
-                    ReadNext().should_be('t');
+                    ReadFirstLine();
                 };
+
+                it["should move to next line after reaching end of line"] = () =>
+                {
+                    inputStream.open_input("testfile.txt");
+
+                    ReadFirstLine();
+                    ReadSecondLine();
+                    ReadThirdLine();
+                };
+
             };
         }
 
         private char ReadNext()
         {
             return inputStream.read_next_char();
+        }
+
+        private void ReadFirstLine()
+        {
+            ReadNext().should_be('t');
+            ReadNext().should_be('e');
+            ReadNext().should_be('s');
+            ReadNext().should_be('t');
+
+            ReadNext().should_be(' ');
+            ReadNext().should_be('t');
+            ReadNext().should_be('e');
+            ReadNext().should_be('x');
+            ReadNext().should_be('t');
+        }
+
+        private void ReadSecondLine()
+        {
+            ReadNext().should_be('l');
+            ReadNext().should_be('i');
+            ReadNext().should_be('n');
+            ReadNext().should_be('e');
+            ReadNext().should_be(' ');
+            ReadNext().should_be('2');
+        }
+
+        private void ReadThirdLine()
+        {
+            ReadNext().should_be('¿');
+            ReadNext().should_be('`');
+            ReadNext().should_be('~');
+            ReadNext().should_be('!');
+            ReadNext().should_be('@');
+            ReadNext().should_be('#');
+            ReadNext().should_be('$');
+            ReadNext().should_be('%');
+            ReadNext().should_be('^');
+            ReadNext().should_be('&');
+            ReadNext().should_be('*');
+            ReadNext().should_be('(');
+            ReadNext().should_be(')');
+            ReadNext().should_be('_');
+            ReadNext().should_be('+');
         }
     }
 }
