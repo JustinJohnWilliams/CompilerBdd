@@ -28,15 +28,19 @@ namespace CompilerBdd
             {
                 current_position.FileName = fileName;
                 current_stream = new StreamReader(path);
+                fileLines = current_stream.ReadToEnd().Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
             }
             else throw new FileNotFoundException("File {0} does not exist.".With(path));
         }
 
-        public char read_current_char()
+        public char read_next_char()
         {
-            fileLines = current_stream.ReadToEnd().Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            char result = fileLines[current_position.Line - 1]
+                                   .ElementAt(current_position.Column);
 
-            return fileLines[current_position.Line - 1].ElementAt(current_position.Column);
+            current_position.move_column_by(1);
+
+            return result;
         }
 
         public void close()
@@ -105,18 +109,30 @@ namespace CompilerBdd
         {
             context["reading from file"] = () =>
             {
-                it["should read first character"] = () =>
+                it["should read characters"] = () =>
                 {
                     inputStream.open_input("testfile.txt");
 
                     (inputStream.current_position.FileName as string).should_be("testfile.txt");
                     (inputStream.current_stream as StreamReader).should_not_be_null();
 
-                    char c = inputStream.read_current_char();
+                    ReadNext().should_be('t');
+                    ReadNext().should_be('e');
+                    ReadNext().should_be('s');
+                    ReadNext().should_be('t');
 
-                    c.should_be('s');
+                    ReadNext().should_be(' ');
+                    ReadNext().should_be('t');
+                    ReadNext().should_be('e');
+                    ReadNext().should_be('x');
+                    ReadNext().should_be('t');
                 };
             };
+        }
+
+        private char ReadNext()
+        {
+            return inputStream.read_next_char();
         }
     }
 }
