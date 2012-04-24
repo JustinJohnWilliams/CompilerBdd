@@ -16,7 +16,7 @@ namespace CompilerBdd
     {
         public char current_character { get; set; }
         public Position current_position { get; set; }
-        public FileStream current_stream { get; private set; }
+        public StreamReader current_stream { get; private set; }
 
         public void open_input(string fileName)
         {
@@ -25,9 +25,14 @@ namespace CompilerBdd
             if (File.Exists(path))
             {
                 current_position.FileName = fileName;
-                current_stream = File.Open(path, FileMode.Open);
+                current_stream = new StreamReader(path);
             }
             else throw new FileNotFoundException("File {0} does not exist.".With(path));
+        }
+
+        public char read_current_char()
+        {
+            return 'c';
         }
 
         public void close()
@@ -65,7 +70,7 @@ namespace CompilerBdd
                     inputStream.open_input("testfile.txt");
 
                     (inputStream.current_position.FileName as string).should_be("testfile.txt");
-                    (inputStream.current_stream as FileStream).should_not_be_null();
+                    (inputStream.current_stream as StreamReader).should_not_be_null();
                 };
 
                 it["should throw exception if file does not exist"] =
@@ -77,28 +82,27 @@ namespace CompilerBdd
         {
             context["closing a file stream"] = () =>
             {
-                it["should throw error if file stream not closed"] = () =>
-                {
-                    inputStream.open_input("testfile.txt");
+                it["should throw error if file stream not closed"] = 
+                    expect<IOException>(() =>
+                    {
+                        inputStream.open_input("testfile.txt");
 
-                    (inputStream.current_stream as FileStream).should_not_be_null();
-
-                    //don't close file stream
-                    expect<IOException>(() => inputStream.open_input("testfile.txt"));
+                        (inputStream.current_stream as StreamReader).should_not_be_null();
                     
-                };
+                        inputStream.open_input("testfile.txt");                    
+                    });
 
                 it["should close a file stream"] = () =>
                 {
                     inputStream.open_input("testfile.txt");
 
-                    (inputStream.current_stream as FileStream).should_not_be_null();
+                    (inputStream.current_stream as StreamReader).should_not_be_null();
 
                     inputStream.close();
 
                     inputStream.open_input("testfile.txt");
 
-                    (inputStream.current_stream as FileStream).should_not_be_null();
+                    (inputStream.current_stream as StreamReader).should_not_be_null();
                 };
             };
         }
@@ -107,12 +111,16 @@ namespace CompilerBdd
         {
             context["reading from file"] = () =>
             {
-                it["should get next character"] = () =>
+                it["should read first character"] = () =>
                 {
                     inputStream.open_input("testfile.txt");
 
                     (inputStream.current_position.FileName as string).should_be("testfile.txt");
-                    (inputStream.current_stream as FileStream).should_not_be_null();
+                    (inputStream.current_stream as StreamReader).should_not_be_null();
+
+                    char c = inputStream.read_current_char();
+
+                    c.should_be('s');
                 };
             };
         }
@@ -120,7 +128,7 @@ namespace CompilerBdd
 
     public static class extensions
     {
-        public static void should_be_null(this FileStream fs)
+        public static void should_be_null(this StreamReader fs)
         {
             fs.should_be_null();
         }
